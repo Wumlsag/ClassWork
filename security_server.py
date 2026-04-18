@@ -15,31 +15,35 @@ logger = logging.getLogger("CyberDefender")
 mcp = FastMCP("SecurityAuditServer")
 # --- COMPONENT 2: VULNERABLE TOOL (Phase A & B) ---
 # This tool is the "Confused Deputy" because it doesn't check the path.
-@mcp.tool()
-def read_log(filename: str) -> str:
-    """Reads a system log file for security analysis."""
-    logger.info(f"AI Agent requested access to: {filename}")
 
-    if not os.path.exists(filename):
-        return "Error: File not found."
-    with open(filename, "r") as f:
-        return f.read()
 # --- COMPONENT 3: HARDENED TOOL (Phase C) ---
 # Uncomment the lines below ONLY when you reach Phase C.
 # Remember to comment out the read_log tool above when you do this.
-# @mcp.tool()
-# def secure_read_log(filename: str) -> str:
-#     """Hardened log reader with path sanitization."""
-#     BASE_DIR = os.path.abspath(os.getcwd())
-#     requested_path = os.path.abspath(os.path.join(BASE_DIR, filename))
-#
-#     if not requested_path.startswith(BASE_DIR):
-#         logger.warning(f"BLOCKED PATH TRAVERSAL: {filename}")
-#         return "ACCESS DENIED: Requested path is outside the authorized directory."
-#
-#     if not os.path.exists(requested_path):
-#         return "Error: File not found."
-#
-#     with open(requested_path, "r") as f:
-#         return f.read()
+@mcp.tool()
+def secure_read_log(filename: str) -> str:
+    """Hardened log reader with path sanitization and least-privilege enforcement."""
+ 
+    # Establish the authorized boundary: the lab directory only.
+    # os.path.abspath resolves any . or .. sequences to their canonical form.
+    BASE_DIR = os.path.abspath(os.getcwd())
+    requested_path = os.path.abspath(os.path.join(BASE_DIR, filename))
+ 
+    # ── THE CRITICAL CHECK ─────────────────────────────────────────────────
+    # After resolving all path traversal sequences, verify the resulting
+    # canonical path is still inside BASE_DIR.
+    # '../../../../etc/passwd' resolves to '/etc/passwd' — does NOT start
+    # with BASE_DIR, so the check catches it.
+    if not requested_path.startswith(BASE_DIR):
+        logger.warning(f"BLOCKED PATH TRAVERSAL: requested={filename} resolved={requested_path}")
+        return "ACCESS DENIED: Requested path is outside the authorized directory."
+ 
+    logger.info(f"AUTHORIZED ACCESS: {requested_path}")
+ 
+    if not os.path.exists(requested_path):
+        return "Error: File not found within authorized directory."
+ 
+    with open(requested_path, "r") as f:
+        return f.read()
+
+
 if __name__ == "__main__": mcp.run(transport="stdio")

